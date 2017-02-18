@@ -1,0 +1,12 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "files.exclude": {
+        "*.sct": true,
+        "*.uvproj": true,
+        "*.bak": true,
+        "*.uvopt": true,
+        "*.s": true,
+        "*.dep": true
+    },
+    "C_Cpp.clang_format_sortIncludes": true
+}
