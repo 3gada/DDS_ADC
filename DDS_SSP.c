@@ -115,14 +115,14 @@ unsigned char in3;
 
 void read_reg_DA7_64 (unsigned char num_reg, unsigned long long data_from_reg)
 {
-unsigned char in1;
-unsigned char in2;
-unsigned char in4;
-unsigned char in8;
-unsigned char in3;
-unsigned char in5;
-unsigned char in6;
-unsigned char in7;
+	unsigned char in1;
+	unsigned char in2;
+	unsigned char in4;
+	unsigned char in8;
+	unsigned char in3;
+	unsigned char in5;
+	unsigned char in6;
+	unsigned char in7;
 	LPC_GPIO_PORT->CLR[7]  = (1<<25) ;  // cs = 0 da7
 
 	while ((LPC_SSP0->SR & 0x01) == 0 );
