@@ -9,7 +9,6 @@ unsigned int in5_1;
 unsigned char in5;
 unsigned char in6;
 unsigned char on_off_led;
-unsigned char number_led;
 
 unsigned int const Base_address_ext_RAM_ = 0x1C000000;
 unsigned int const Size_ext_RAM_16_ = (1 << 22);
@@ -26,7 +25,82 @@ unsigned int i1_t;
 unsigned int ik_t;
 unsigned char RAM_test_continue = 0;
 
+enum LED
+{
+  BLUE,
+  MAGENTA,
+  RED,
+  YELLOW,
+  GREEN,
+  CYAN,
+  WHITE
+};
+
+enum LED led;
+
 double Time = 10000.0 / 1500.0;
+
+void led_on(enum LED l)
+{
+  switch (l)
+  {
+  case BLUE:
+    LPC_GPIO_PORT->CLR[3] = (1 << 5);
+    break;
+  case MAGENTA:
+    LPC_GPIO_PORT->CLR[3] = (1 << 5) | (1 << 7);
+    break;
+  case RED:
+    LPC_GPIO_PORT->CLR[3] = (1 << 7);
+    break;
+  case YELLOW:
+    LPC_GPIO_PORT->CLR[3] = (1 << 7);
+    LPC_GPIO_PORT->CLR[0] = (1 << 7);
+    break;
+  case GREEN:
+    LPC_GPIO_PORT->CLR[0] = (1 << 7);
+    break;
+  case CYAN:
+    LPC_GPIO_PORT->CLR[3] = (1 << 5);
+    LPC_GPIO_PORT->CLR[0] = (1 << 7);
+    break;
+  case WHITE:
+    LPC_GPIO_PORT->CLR[3] = (1 << 5) | (1 << 7);
+    LPC_GPIO_PORT->CLR[0] = (1 << 7);
+    break;
+  }
+}
+
+void led_off(enum LED l)
+{
+  switch (l)
+  {
+  case BLUE:
+    LPC_GPIO_PORT->SET[3] = (1 << 5);
+    break;
+  case MAGENTA:
+    LPC_GPIO_PORT->SET[3] = (1 << 5) | (1 << 7);
+    break;
+  case RED:
+    LPC_GPIO_PORT->SET[3] = (1 << 7);
+    break;
+  case YELLOW:
+    LPC_GPIO_PORT->SET[3] = (1 << 7);
+    LPC_GPIO_PORT->SET[0] = (1 << 7);
+    break;
+  case GREEN:
+    LPC_GPIO_PORT->SET[0] = (1 << 7);
+    break;
+  case CYAN:
+    LPC_GPIO_PORT->SET[3] = (1 << 5);
+    LPC_GPIO_PORT->SET[0] = (1 << 7);
+    break;
+  case WHITE:
+    LPC_GPIO_PORT->SET[3] = (1 << 5) | (1 << 7);
+    LPC_GPIO_PORT->SET[0] = (1 << 7);
+    break;
+  }
+}
 
 void SysTick_Handler(void)
 {
@@ -38,55 +112,21 @@ void SysTick_Handler(void)
     ticks = 0;
     on_off_led ^= 0x01;
 
-    switch (number_led)
+    if (on_off_led != 0)
     {
-    //			case 0: {if (on_off_led != 0){LPC_GPIO_PORT->CLR[3] = (1<<5);} else { LPC_GPIO_PORT->SET[3] = (1<<5) ; number_led = 1;} break;}
-    //			case 1:	{if (on_off_led != 0){LPC_GPIO_PORT->CLR[3] = (1<<7);} else { LPC_GPIO_PORT->SET[3] = (1<<7) ; number_led = 2;} break;}
-    //			case 2: {if (on_off_led != 0){LPC_GPIO_PORT->CLR[0] = (1<<7);} else { LPC_GPIO_PORT->SET[0] = (1<<7) ; number_led = 0;} break;}
-    case 0:
+      led_on(led);
+    }
+    else
     {
-      if (on_off_led != 0)
+      led_off(led);
+      if (led == WHITE)
       {
-        LPC_GPIO_PORT->CLR[3] = (1 << 5);
+        led = BLUE;
       }
       else
       {
-        LPC_GPIO_PORT->SET[3] = (1 << 5);
-        number_led = 1;
+        ++led;
       }
-      break;
-    }
-    case 1:
-    {
-      if (on_off_led != 0)
-      {
-        LPC_GPIO_PORT->CLR[3] = (1 << 7);
-      }
-      else
-      {
-        LPC_GPIO_PORT->SET[3] = (1 << 7);
-        number_led = 2;
-      }
-      break;
-    }
-    case 2:
-    {
-      if (on_off_led != 0)
-      {
-        LPC_GPIO_PORT->CLR[0] = (1 << 7);
-      }
-      else
-      {
-        LPC_GPIO_PORT->SET[0] = (1 << 7);
-        number_led = 0;
-      }
-      break;
-    }
-    default:
-    {
-      number_led = 0;
-      break;
-    }
     }
 
     LPC_GPIO_PORT->NOT[3] = (1 << 8);
