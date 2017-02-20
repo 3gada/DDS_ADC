@@ -6,7 +6,17 @@
         "*.bak": true,
         "*.uvopt": true,
         "*.s": true,
-        "*.dep": true
+        "*.dep": true,
+        "*.htm": true,
+        "*.axf": true,
+        "*.map": true,
+        "*.o": true,
+        "*.crf": true,
+        "*.d": true,
+        "*.lst": true,
+        "*.iex": true,
+        "*.lnp": true,
+        "*.uvgui.*": true
     },
     "C_Cpp.clang_format_sortIncludes": true
 }
