@@ -32,8 +32,7 @@ enum LED
   RED,
   YELLOW,
   GREEN,
-  CYAN,
-  WHITE
+  CYAN
 };
 
 enum LED led;
@@ -64,10 +63,6 @@ void led_on(enum LED l)
     LPC_GPIO_PORT->CLR[3] = (1 << 5);
     LPC_GPIO_PORT->CLR[0] = (1 << 7);
     break;
-  case WHITE:
-    LPC_GPIO_PORT->CLR[3] = (1 << 5) | (1 << 7);
-    LPC_GPIO_PORT->CLR[0] = (1 << 7);
-    break;
   }
 }
 
@@ -95,10 +90,6 @@ void led_off(enum LED l)
     LPC_GPIO_PORT->SET[3] = (1 << 5);
     LPC_GPIO_PORT->SET[0] = (1 << 7);
     break;
-  case WHITE:
-    LPC_GPIO_PORT->SET[3] = (1 << 5) | (1 << 7);
-    LPC_GPIO_PORT->SET[0] = (1 << 7);
-    break;
   }
 }
 
@@ -119,7 +110,7 @@ void SysTick_Handler(void)
     else
     {
       led_off(led);
-      if (led == WHITE)
+      if (led == CYAN)
       {
         led = BLUE;
       }
